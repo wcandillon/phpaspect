@@ -32,7 +32,7 @@ Link       http://phpaspect.org/
 <xsl:output method="xml" encoding="ISO-8859-1" omit-xml-declaration="yes" />
 <xsl:template match="php:*">
     <xsl:choose>
-        <xsl:when test="name(.) = 'php:aspect_pointcut' and not(ancestor::php:aspect_pointcut)">
+        <xsl:when test="name() = 'php:aspect_pointcut' and not(ancestor::php:aspect_pointcut)">
             <xsl:element name="php:xpath_expr" namespace="&php;">
                 <xsl:attribute name="id"><xsl:value-of select="@id" /></xsl:attribute>
                 <!--xsl:value-of select="php:function('XPathFunctions::setCurrentId')" /-->
@@ -62,6 +62,20 @@ Link       http://phpaspect.org/
                             <xsl:value-of select="php:function('XPathFunctions::addPointcut', ancestor::php:aspect_statement/php:T_STRING/text(), php:function('XPathFunctions::getCallJoinPoint', php:aspect_call, php:aspect_signature, php:aspect_parameters, normalize-space(php:aspect_parameters/php:T_LNUMBER/text())))" />
                         </xsl:if>
                         <xsl:value-of select="php:function('XPathFunctions::getCallJoinPoint', php:aspect_call, php:aspect_signature, php:aspect_parameters, normalize-space(php:aspect_parameters/php:T_LNUMBER/text()))" />
+                    </xsl:if>
+                    <!-- File joinpoint -->
+                    <xsl:if test="name() = 'php:aspect_joinpoint' and php:T_FILE">
+                        <xsl:if test="ancestor::php:aspect_statement[1]/php:T_STRING">
+                            <xsl:value-of select="php:function('XPathFunctions::addPointcut', ancestor::php:aspect_statement/php:T_STRING/text(), php:function('XPathFunctions::getFileJoinPoint', php:T_CONSTANT_ENCAPSED_STRING))" />
+                        </xsl:if>
+                        <xsl:value-of select="php:function('XPathFunctions::getFileJoinPoint', php:T_CONSTANT_ENCAPSED_STRING)" />
+                    </xsl:if>
+                    <!-- Within joinpoint -->
+                    <xsl:if test="name() = 'php:aspect_joinpoint' and php:T_WITHIN">
+                        <xsl:if test="ancestor::php:aspect_statement[1]/php:T_STRING">
+                            <xsl:value-of select="php:function('XPathFunctions::addPointcut', ancestor::php:aspect_statement/php:T_STRING/text(), php:function('XPathFunctions::getWithinJoinPoint', php:aspect_signature_r))" />
+                        </xsl:if>
+                        <xsl:value-of select="php:function('XPathFunctions::getWithinJoinPoint', php:aspect_signature_r)" />
                     </xsl:if>
                     <xsl:if test="name() = 'php:T_BOOLEAN_OR'">
                         <xsl:if test="ancestor::php:aspect_statement[1]/php:T_STRING">

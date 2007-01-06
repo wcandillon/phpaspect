@@ -28,7 +28,7 @@ Category   PHP
 Package    phpAspect
 Author     William Candillon <wcandillon@elv.telecom-lille1.eu>
 License   http://gnu.org/copyleft/gpl.html GNU GPL
-Version    0.01
+Version    0.1.0
 Link       http://phpaspect.org/
 
 -->
@@ -73,7 +73,8 @@ Link       http://phpaspect.org/
                     <xsl:value-of select="."/>
                 <xsl:text>&lt;?php&newline;</xsl:text>
             </xsl:when>
-            <xsl:when test="name(.) = 'php:top_statement' and child::php:T_ASPECT[1]"><!-- Vérifier les propriétés et méthodes avec un nom réservé -->
+            <xsl:when test="name(.) = 'php:top_statement' and child::php:T_ASPECT[1]">
+            <!-- @TODOVérifier les propriétés et méthodes avec un nom réservé -->
                 <xsl:text>if(!class_exists('Aspect_</xsl:text>
 		<xsl:value-of select="./php:T_STRING/text()" />
 		<xsl:text>')){ class Aspect_</xsl:text>
@@ -83,7 +84,9 @@ Link       http://phpaspect.org/
                 <xsl:value-of select="./php:T_STRING/text()" />
                 <xsl:text>();}return self::$instance;}public function __call($m, $a){}public function __clone(){trigger_error('Clone is not allowed.', E_USER_ERROR);}
                 </xsl:text>
-                <xsl:apply-templates select="child::php:class_statement_list"/>
+                <xsl:for-each select="//php:class_statement">
+                    <xsl:copy-of select="."/>
+                </xsl:for-each>
                 <xsl:text>}}if(!isset($GLOBALS['__phpaspect']['</xsl:text>
                 <xsl:value-of select="./php:T_STRING/text()" />
                 <xsl:text>'])){$GLOBALS['__phpaspect']['</xsl:text>

@@ -4,10 +4,10 @@ class Foo{
         var_dump($this);
     }
 }
- 
+
 class Bar{
     private $state;
- 
+
     public function __construct($state=false){
         $this->state = $state;
     }

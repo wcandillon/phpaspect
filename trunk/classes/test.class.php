@@ -10,14 +10,14 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with GeSHi; if not, write to the Free Software
+ *  along with phpAspect; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * @category   PHP
  * @package    phpAspect
  * @author     William Candillon <wcandillon@elv.telecom-lille1.eu>
  * @license   http://gnu.org/copyleft/gpl.html GNU GPL
- * @version    0.01
+ * @version    0.1.0
  * @link       http://phpaspect.org
  */
 
@@ -51,6 +51,16 @@ class Test{
     }
 
     public static function setExecJPt(){
+        if(!isset(self::$dynamicJPt[self::$currentId])){ self::$dynamicJPt[self::$currentId] = array(); }
+        self::$dynamicJPt[self::$currentId][] = "false()";
+    }
+
+    public static function setFileJPt(){
+        if(!isset(self::$dynamicJPt[self::$currentId])){ self::$dynamicJPt[self::$currentId] = array(); }
+        self::$dynamicJPt[self::$currentId][] = "false()";
+    }
+
+    public static function setWithinJPt(){
         if(!isset(self::$dynamicJPt[self::$currentId])){ self::$dynamicJPt[self::$currentId] = array(); }
         self::$dynamicJPt[self::$currentId][] = "false()";
     }

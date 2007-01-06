@@ -5,7 +5,7 @@ aspect TraceOrder{
   //pointcut giveDiscount:exec(public Order::getAmount(1));
 
   after($quantity, $reference): logAddItem{
-    printf("%d %s added to the cart\n", $quantity, $reference);
+	printf("%d %s added to the cart\n", $quantity, $reference);
   }
 
   after(): logTotalAmount{

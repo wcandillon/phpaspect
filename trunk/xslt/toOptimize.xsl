@@ -24,19 +24,24 @@ Category   PHP
 Package    phpAspect
 Author     William Candillon <wcandillon@elv.telecom-lille1.eu>
 License   http://gnu.org/copyleft/gpl.html GNU GPL
-Version    0.01
+Version    0.1.0
 Link       http://phpaspect.org/
 
 -->
 <xsl:stylesheet version="1.0" xmlns="&xsl;" xmlns:xsl="&xsl;" xmlns:php="&php;">
 <xsl:output method="xml" encoding="ISO-8859-1" omit-xml-declaration="yes" />
 <xsl:template match="php:*">
-    <xsl:if test="name() = 'php:unticked_statement' and true()">
-        <xsl:message><xsl:value-of select="substring(//php:T_VARIABLE[2]/text(), 0, 11)" /></xsl:message>
-    </xsl:if>
-    <xsl:copy>
-        <xsl:attribute name="id"><xsl:value-of select="@id" /></xsl:attribute>
-        <xsl:apply-templates select="*|text()"/>
-    </xsl:copy>
+    <xsl:choose>
+        <xsl:when test="name()='php:transversal_expr' and not(//php:thisJoinpoint)">
+            <php:unticked_statement>
+                <xsl:value-of select="php:function('Nodes::getNode', @id)" />
+            </php:unticked_statement>
+        </xsl:when>
+        <xsl:otherwise>
+            <xsl:copy>
+                <xsl:apply-templates select="*|text()"/>
+            </xsl:copy>
+        </xsl:otherwise>
+    </xsl:choose>
 </xsl:template>
 </xsl:stylesheet>

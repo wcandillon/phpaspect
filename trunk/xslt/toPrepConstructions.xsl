@@ -24,26 +24,32 @@ Category   PHP
 Package    phpAspect
 Author     William Candillon <wcandillon@elv.telecom-lille1.eu>
 License   http://gnu.org/copyleft/gpl.html GNU GPL
-Version    0.01
+Version    0.1.0
 Link       http://phpaspect.org/
 
 -->
-<xsl:stylesheet version="1.0" xmlns="&xsl;" xmlns:xsl="&xsl;" xmlns:php="&php;">
+<xsl:stylesheet version="1.0" xmlns:xsl="&xsl;" xmlns:php="&php;">
 <xsl:output method="xml" encoding="ISO-8859-1" omit-xml-declaration="yes" />
 <xsl:template match="php:*">
     <xsl:variable name="count" select="count(ancestor::php:unticked_statement)+1"/>
     <xsl:if test="name() = 'php:unticked_statement'">
-        <xsl:for-each select="descendant::php:expr_without_variable[./php:T_NEW and 
-                                    not(count(ancestor::php:unticked_statement) &#62; $count)]">
-            <xsl:sort select="@id" data-type="number" order="ascending" />
-            <xsl:element name="php:unticked_statement" namespace="&php;">
-                    <xsl:value-of select="php:function('XPathFunctions::addId', @id, @id)" />
-                    <xsl:element name="php:T_VARIABLE" namespace="&php;">$phpaspect_<xsl:value-of select="@id" /></xsl:element>
-                    <xsl:element name="php:T_CHAR61" namespace="&php;"> = </xsl:element>
-                    <xsl:copy-of select="." />
-                    <xsl:element name="php:T_CHAR59" namespace="&php;">;</xsl:element>
-            </xsl:element>
-        </xsl:for-each>
+        <xsl:element name="php:transversal_expr">
+            <xsl:attribute name="id"><xsl:value-of select="@id" /></xsl:attribute>
+            <xsl:for-each select="descendant::php:expr_without_variable[./php:T_NEW and 
+                                        not(count(ancestor::php:unticked_statement) &#62; $count)]">
+                <xsl:sort select="@id" data-type="number" order="ascending" />
+                <xsl:element name="php:unticked_statement" namespace="&php;">
+                        <xsl:value-of select="php:function('XPathFunctions::addId', @id, @id)" />
+                        <xsl:element name="php:T_VARIABLE" namespace="&php;">$phpaspect_<xsl:value-of select="@id" /></xsl:element>
+                        <xsl:element name="php:T_CHAR61" namespace="&php;"> = </xsl:element>
+                        <!--xsl:element name="php:unrolled_expr">
+                            <xsl:attribute name="id"><xsl:value-of select="position()" /></xsl:attribute-->
+                            <xsl:copy-of select="." />
+                        <!--/xsl:element-->
+                        <xsl:element name="php:T_CHAR59" namespace="&php;">;</xsl:element>
+                </xsl:element>
+            </xsl:for-each>
+        </xsl:element>
     </xsl:if>
     <xsl:copy>
         <xsl:attribute name="id"><xsl:value-of select="@id" /></xsl:attribute>

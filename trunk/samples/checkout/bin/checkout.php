@@ -1,18 +1,26 @@
 <?php
-if(!function_exists('isType')){ require_once '_phpaspect/functions.php';
+$__current_dir = dirname(__FILE__);if(!function_exists('isType')){ require_once '_phpaspect/functions.php';
 require_once '_phpaspect/joinpoint.class.php';
 require_once '_phpaspect/newjoinpoint.class.php';
 require_once '_phpaspect/calljoinpoint.class.php';
-require_once '_phpaspect/aspect.interface.php';
-require_once '_phpaspect/logging.class.php';
-}
+require_once '_phpaspect/execjoinpoint.class.php';
+require_once '_phpaspect/aspect.interface.php';}
+require_once $__current_dir.'/_phpaspect/logging.class.php';
+
 ?><?php
 class Order {
     private $items = array();
     private $amount = 0;
     public function addItem($reference, $quantity) {
         $__return_result = $this->__phpaspectaddItem($reference, $quantity);
-        printf("%d %s added to the cart\n", $quantity, $reference);
+        $thisJoinPoint = new ExecJoinPoint('', __LINE__, __FILE__, array($reference, $quantity,), $this, 'addItem');
+        if (!function_exists('__phpaspect4dc024d39594cf9fac28ae3921ae0c2c')) {
+            function __phpaspect4dc024d39594cf9fac28ae3921ae0c2c($thisJoinPoint, $quantity, $reference) {
+                printf("%d %s added to the cart\n", $quantity, $reference);
+            }
+        }
+        __phpaspect4dc024d39594cf9fac28ae3921ae0c2c($thisJoinPoint, $quantity, $reference);
+        unset($thisJoinPoint);
         return $__return_result;
     }
     public function __phpaspectaddItem($reference, $quantity) {
@@ -57,36 +65,33 @@ $phpaspect_438 = &$myOrder;
 $phpaspect_468 = &$phpaspect_438->addItem('Largo Winch', 2);
 if (isCallType($phpaspect_438, 'Order', 'addItem', 'addItem')) {
     $thisJoinPoint = new CallJoinPoint('', __LINE__, __FILE__, array('Largo Winch', 2), $phpaspect_438, 'addItem');
-    function __phpaspect01da3474c8c314d2c80f17151929df9a() {
-        global $thisJoinPoint;
+    function __phpaspecta074a8ba31ee3088147e23d6d2f85108($thisJoinPoint) {
         printf("Total amount of the cart: %.2f euros\n", $thisJoinPoint->getTarget()->getAmount());
         unset($thisJoinPoint);
     }
-    __phpaspect01da3474c8c314d2c80f17151929df9a();
+    __phpaspecta074a8ba31ee3088147e23d6d2f85108($thisJoinPoint);
 }
 $phpaspect_468;
 $phpaspect_484 = &$myOrder;
 $phpaspect_514 = &$phpaspect_484->addItem('Asterix', 2);
 if (isCallType($phpaspect_484, 'Order', 'addItem', 'addItem')) {
     $thisJoinPoint = new CallJoinPoint('', __LINE__, __FILE__, array('Asterix', 2), $phpaspect_484, 'addItem');
-    function __phpaspect798dcf5ef0555b6eda578880e159d031() {
-        global $thisJoinPoint;
+    function __phpaspect3eac497f913cd665e69b40c71086a2e6($thisJoinPoint) {
         printf("Total amount of the cart: %.2f euros\n", $thisJoinPoint->getTarget()->getAmount());
         unset($thisJoinPoint);
     }
-    __phpaspect798dcf5ef0555b6eda578880e159d031();
+    __phpaspect3eac497f913cd665e69b40c71086a2e6($thisJoinPoint);
 }
 $phpaspect_514;
 $phpaspect_530 = &$myOrder;
 $phpaspect_564 = &$phpaspect_530->addItem('Largo Winch', -6);
 if (isCallType($phpaspect_530, 'Order', 'addItem', 'addItem')) {
     $thisJoinPoint = new CallJoinPoint('', __LINE__, __FILE__, array('Largo Winch', -6), $phpaspect_530, 'addItem');
-    function __phpaspecte3aa34f6be6c50d8292afc54b4f644d5() {
-        global $thisJoinPoint;
+    function __phpaspect86b83546a934d33bfeea68eb2707d27e($thisJoinPoint) {
         printf("Total amount of the cart: %.2f euros\n", $thisJoinPoint->getTarget()->getAmount());
         unset($thisJoinPoint);
     }
-    __phpaspecte3aa34f6be6c50d8292afc54b4f644d5();
+    __phpaspect86b83546a934d33bfeea68eb2707d27e($thisJoinPoint);
 }
 $phpaspect_564;
 ?>

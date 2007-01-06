@@ -4,8 +4,11 @@ if(!defined('PHPUnit_MAIN_METHOD')){
 }
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/TextUI/TestRunner.php';
+
 require_once 'SingletonTest.php';
 require_once 'CheckoutTest.php';
+require_once 'BookTest.php';
+require_once 'ObserverTest.php';
 
 class AllTests{
 
@@ -16,6 +19,8 @@ class AllTests{
   public static function suite(){
     $suite = new PHPUnit_Framework_TestSuite('SingletonTest');
     $suite->addTest(new PHPUnit_Framework_TestSuite('CheckoutTest'));
+    $suite->addTest(new PHPUnit_Framework_TestSuite('BookTest'));
+    $suite->addTest(new PHPUnit_Framework_TestSuite('ObserverTest'));
     return $suite;
   }
 }

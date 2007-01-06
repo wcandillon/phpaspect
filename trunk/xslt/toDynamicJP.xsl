@@ -24,7 +24,7 @@ Category   PHP
 Package    phpAspect
 Author     William Candillon <wcandillon@elv.telecom-lille1.eu>
 License   http://gnu.org/copyleft/gpl.html GNU GPL
-Version    0.01
+Version    0.1.0
 Link       http://phpaspect.org/
 
 -->
@@ -47,6 +47,12 @@ Link       http://phpaspect.org/
                     </xsl:if>
                     <xsl:if test="name(.) = 'php:aspect_joinpoint' and php:T_EXEC">
                         <xsl:value-of select="php:function('Test::setExecJPt')" />
+                    </xsl:if>
+                    <xsl:if test="name(.) = 'php:aspect_joinpoint' and php:T_FILE">
+                        <xsl:value-of select="php:function('Test::setFileJPt')" />
+                    </xsl:if>
+                    <xsl:if test="name(.) = 'php:aspect_joinpoint' and php:T_WITHIN">
+                        <xsl:value-of select="php:function('Test::setWithinJPt')" />
                     </xsl:if>
                     <xsl:if test="name() = 'php:T_BOOLEAN_OR'">
                         <xsl:value-of select="php:function('Test::setOr')" />

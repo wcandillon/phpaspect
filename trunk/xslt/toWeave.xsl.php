@@ -24,7 +24,7 @@ Category   PHP
 Package    phpAspect
 Author     William Candillon <wcandillon@elv.telecom-lille1.eu>
 License   http://gnu.org/copyleft/gpl.html GNU GPL
-Version    0.01
+Version    0.1.0
 Link       http://phpaspect.org/
 
 -->
@@ -54,7 +54,7 @@ Link       http://phpaspect.org/
 ?>
             <xsl:choose>
                 <xsl:when test="php:T_OBJECT_OPERATOR">
-                    <xsl:value-of select="php:function('XPathFunctions::setProceed', ./php:*[local-name() = 'T_VARIABLE' or
+                    <xsl:value-of select="php:function('XPathFunctions::setProceed', ./php:*[(local-name() = 'T_VARIABLE' and position()=3) or
                                                                                         local-name() = 'T_OBJECT_OPERATOR' or
                                                                                         local-name() = 'object_property' or
                                                                                         local-name() = 'method_or_not'])" /> 
@@ -72,7 +72,7 @@ Link       http://phpaspect.org/
 ?>
             <xsl:choose>
                 <xsl:when test="php:function('XPathFunctions::getWeaved')">
-                    <xsl:copy-of select="php:T_VARIABLE" />
+                    <xsl:copy-of select="php:T_VARIABLE[1]" />
                     <php:T_CHAR61>=</php:T_CHAR61>
                     <php:T_VARIABLE>$__return_result</php:T_VARIABLE>
                     <php:T_CHAR59>;</php:T_CHAR59>
@@ -127,7 +127,15 @@ Link       http://phpaspect.org/
                     <php:T_EQUAL>=</php:T_EQUAL>
                     <xsl:if test="not(php:method_modifiers//php:T_STATIC)">
                         <xsl:copy>
-                            <php:T_VARIABLE>$this->__phpaspect<xsl:value-of select="php:T_STRING" />(<xsl:value-of select="php:parameter_list" />)</php:T_VARIABLE>
+                            <php:code>$this->__phpaspect<xsl:value-of select="php:T_STRING" />(</php:code>
+                            <xsl:variable name="count" select="count(php:parameter_list/php:non_empty_parameter_list//php:T_VARIABLE)" />
+                            <xsl:for-each select="php:parameter_list/php:non_empty_parameter_list//php:T_VARIABLE">
+                                <xsl:copy-of select="." />
+                                <xsl:if test="position()!=$count">
+                                    <php:CHAR44>,</php:CHAR44>
+                                </xsl:if>
+                            </xsl:for-each>
+                            <php:code>)</php:code>
                         </xsl:copy>
                     </xsl:if>
                     <xsl:if test="php:method_modifiers//php:T_STATIC">
@@ -163,6 +171,7 @@ Link       http://phpaspect.org/
         </xsl:when>
         <xsl:otherwise>
             <xsl:copy>
+                <xsl:attribute name="id"><xsl:value-of select="@id" /></xsl:attribute>
                 <xsl:apply-templates select="*|text()"/>
             </xsl:copy>
         </xsl:otherwise>

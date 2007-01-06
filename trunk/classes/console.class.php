@@ -10,14 +10,14 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with GeSHi; if not, write to the Free Software
+ *  along with phpAspect; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * @category   PHP
  * @package    phpAspect
  * @author     William Candillon <wcandillon@elv.telecom-lille1.eu>
  * @license   http://gnu.org/copyleft/gpl.html GNU GPL
- * @version    0.01
+ * @version    0.1.0
  * @link       http://phpaspect.org
  */
 
@@ -133,7 +133,7 @@ class Console extends Console_Getopt{
      * @name    VERSION
      * @access  public
      */
-    const VERSION = 0.01;
+    const VERSION = 0.10;
 
     /**
      * Date version
@@ -141,7 +141,7 @@ class Console extends Console_Getopt{
      * @name    DATE_VERSION
      * @access  public
      */
-    const DATE_VERSION = 'January 01 2007';
+    const DATE_VERSION = 'January 05 2007';
 
     /**
      * Console constructor
@@ -315,9 +315,9 @@ class Console extends Console_Getopt{
          return "Usage: phpaspect.php [options] <aspects> <source> <target>
                      [options] <aspect> -r <code>\n
   -v, --verbose             Activate verbose mode.
-  -e, --eval                Weave eval code.
-  -r, --code      <code>    Weave the PHP <code>.
-  -b, --beautify            Beautify the output code (for debug purpose only).
+  -e, --eval                Weave eval code. (not implemented yet)
+  -r, --code      <code>    Weave the PHP <code>. (not implemented yet)
+  -b, --beautify            Beautify the output code.
   -h, --help                This help.
   -d, --remove              Remove the targeted directory.
   -V, --version             Version number.\n
@@ -334,7 +334,7 @@ class Console extends Console_Getopt{
      * @return  string
      */
     public function version(){
-        return sprintf("phpAspect version %.2f, %s\nAuthor: William Candillon <wcandillon@php.net>\nWebsite: http://phpaspect.org\n", self::VERSION, self::DATE_VERSION);
+        return sprintf("phpAspect version %.2f, %s\nAuthor: William Candillon <wcandillon@elv.telecom-lille1.eu>\nWebsite: http://phpaspect.org\n", self::VERSION, self::DATE_VERSION);
     }
 
     /**

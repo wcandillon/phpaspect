@@ -1,10 +1,11 @@
 <?php
-require_once '_phpaspect/functions.php';
+$__current_dir = dirname(__FILE__);if(!function_exists('isType')){ require_once '_phpaspect/functions.php';
 require_once '_phpaspect/joinpoint.class.php';
 require_once '_phpaspect/newjoinpoint.class.php';
 require_once '_phpaspect/calljoinpoint.class.php';
-require_once '_phpaspect/aspect.interface.php';
-require_once '_phpaspect/singleton.class.php';
+require_once '_phpaspect/execjoinpoint.class.php';
+require_once '_phpaspect/aspect.interface.php';}
+require_once $__current_dir.'/_phpaspect/singleton.class.php';
 
 ?><?php
 class Foo {
@@ -27,7 +28,7 @@ class Bar {
     }
     private $state;
     public function __construct($state = false) {
-        $__return_result = $this->__phpaspect__construct($state = false);
+        $__return_result = $this->__phpaspect__construct($state);
         return $__return_result;
     }
     public function __phpaspect__construct($state = false) {

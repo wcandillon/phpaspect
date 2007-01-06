@@ -10,14 +10,14 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with GeSHi; if not, write to the Free Software
+ *  along with phpAspect; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * @category   PHP
  * @package    phpAspect
  * @author     William Candillon <wcandillon@elv.telecom-lille1.eu>
  * @license   http://gnu.org/copyleft/gpl.html GNU GPL
- * @version    0.01
+ * @version    0.1.0
  * @link       http://phpaspect.org
  */
 
@@ -29,6 +29,15 @@ class XPathFunctions{
     private static $ids = array();
     private static $callIds = array();
     private static $pointcuts = array();
+    private static $fileName;
+
+    public static function setFileName($fileName){
+        self::$fileName = $fileName;
+    }
+
+    public static function getFileName(){
+        return self::$fileName;
+    }
 
     public static function clearAll(){
         self::$proceed = null;
@@ -86,7 +95,24 @@ class XPathFunctions{
         $className = trim($className[0]->nodeValue);
         $methodModifiers = trim($methodModifiers[0]->nodeValue);
         $methodName = trim($methodName[0]->nodeValue);
-        return "(name()='php:class_statement' and not(//php:method_body/php:CHAR59) and not(ancestor::php:unticked_class_declaration_statement[1]/php:interface_entry) and php:T_STRING = '$methodName' and normalize-space(php:method_modifiers) = '$methodModifiers' and php:T_STRING = '$methodName' and ((normalize-space('$parametersCount') = '*') or count(php:parameter_list/descendant::php:non_empty_parameter_list) = '$parametersCount'))";
+        $expr = "(name()='php:class_statement' and not(//php:method_body/php:CHAR59) and
+                not(ancestor::php:unticked_class_declaration_statement[1]/php:interface_entry) 
+                and (ancestor::php:unticked_class_declaration_statement[1]/php:T_STRING = '$className' or php:function('XPathFunctions::isMethodName', ancestor::php:unticked_class_declaration_statement[1]/php:T_STRING, '$className'))
+                and (php:T_STRING = '$methodName' or php:function('XPathFunctions::isMethodName', php:T_STRING, '$methodName')) 
+                and (normalize-space(php:method_modifiers) = '$methodModifiers'
+                 or  '$methodModifiers'='*')
+                )";
+        return $expr;
+    }
+
+    public static function getFileJoinPoint($fileName){
+        $fileName = trim($fileName[0]->nodeValue);
+        return "(php:function('XPathFunctions::isMethodName', php:function('XPathFunctions::getFileName'), $fileName))";
+    }
+
+    public static function getWithinJoinPoint($className){
+        $className = trim($className[0]->nodeValue);
+        return "(php:function('XPathFunctions::isMethodName', ancestor::php:unticked_class_declaration_statement[1]/php:T_STRING, '$className'))";
     }
 
     //public function registered 
@@ -154,7 +180,8 @@ class XPathFunctions{
     }
 
     public static function isMethodName($name, $pattern){
-        return eregi(str_replace('*', '.*', $pattern), trim($name[0]->nodeValue));
+        if(!is_string($name)){ $name = $name[0]->nodeValue; }
+        return eregi(str_replace('*', '.*', $pattern), trim($name));
     }
 
     public static function hasIntroduction($className, $subType, $classes){
@@ -204,5 +231,9 @@ class Counter{
         self::$lastId = md5(microtime(true));
         return self::$lastId;
     }
+}
+
+function var_dump_dom($e){
+    var_dump($e[0]->nodeValue);
 }
 ?>

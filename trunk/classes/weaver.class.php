@@ -10,14 +10,14 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with GeSHi; if not, write to the Free Software
+ *  along with phpAspect; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * @category   PHP
  * @package    phpAspect
  * @author     William Candillon <wcandillon@elv.telecom-lille1.eu>
  * @license   http://gnu.org/copyleft/gpl.html GNU GPL
- * @version    0.01
+ * @version    0.1.0
  * @link       http://phpaspect.org
  */
 
@@ -146,7 +146,7 @@ class Weaver{
     }
 
     /**
-     * @
+     *
      * @todo Gérer avec les DIRECTORY_SEPARATOR
      **/
     public function weaveFiles($source, $_source, $_target, $sub){
@@ -156,32 +156,35 @@ class Weaver{
                 continue;
             }elseif(is_dir($_source.'/'.$file)){
                 mkdir($_target.'/'.$file);
-                $this->weaveFiles($source, $_source.'/'.$file, $_target.'/'.$file, $sub++);
+                $this->weaveFiles($source, $_source.'/'.$file, $_target.'/'.$file, $sub+1);
             }else{
                 XPathFunctions::clearAll();
                 $path = $_target.'/'.$file;
                 if(substr($file, -4) == '.php' && substr($file, -11) != '.aspect.php'){
-                    $xml = $this->xsltProc(parse_tree_from_file($_source.'/'.$file),
+                    $xml = $this->xsltProc($this->parse_tree_from_file($_source.'/'.$file),
                                                 INSTALL_PATH.'xslt/toPrepConstructions.xsl', __LINE__);
                     $xml = $this->xsltProc($xml, INSTALL_PATH.'xslt/toPrepCalls.xsl', __LINE__);
                     $xml = $this->xsltProc($xml, INSTALL_PATH.'xslt/toPrepare.xsl', __LINE__);
+                    XPathFunctions::setFileName($file);
                     $xml = $this->xsltProc($xml, INSTALL_PATH.'tmp/'.getmypid().'_aspect.xsl', __LINE__);
                     //$xml = $this->xsltProc($xml, INSTALL_PATH.'xslt/toOptimize.xsl', __LINE__);
                     $_path = '';
-                    for($i=2;$i<$sub;$i++){
+                    for($i=0;$i<$sub;$i++){
                         $_path .= '../';
                     }
                     $fp = fopen($path, 'w');
                     fwrite($fp, "<?php\n");
+                    fwrite($fp, '$__current_dir = dirname(__FILE__);');
                     fwrite($fp, 'if(!function_exists(\'isType\')){ require_once \''.$_path."_phpaspect/functions.php';\n");
                     fwrite($fp, 'require_once \''.$_path."_phpaspect/joinpoint.class.php';\n");
                     fwrite($fp, 'require_once \''.$_path."_phpaspect/newjoinpoint.class.php';\n");
                     fwrite($fp, 'require_once \''.$_path."_phpaspect/calljoinpoint.class.php';\n");
-                    fwrite($fp, 'require_once \''.$_path."_phpaspect/aspect.interface.php';\n");
+                    fwrite($fp, 'require_once \''.$_path."_phpaspect/execjoinpoint.class.php';\n");
+                    fwrite($fp, 'require_once \''.$_path."_phpaspect/aspect.interface.php';}\n");
                     foreach($this->includes as $include){
-                        fwrite($fp, 'require_once \''.$_path.'_phpaspect/'.$include."class.php';\n");
+                        fwrite($fp, 'require_once $__current_dir.\'/'.$_path.'_phpaspect/'.$include."class.php';\n");
                     }
-                    fwrite($fp, "}\n?>");
+                    fwrite($fp, "\n?>");
                     fwrite($fp, $this->beautifyCode($this->xsltProc(trim($xml), INSTALL_PATH.'xslt/toWrite.xsl', __LINE__)));
                     fclose($fp);
                     unset($xml);
@@ -197,6 +200,18 @@ class Weaver{
 
     }
 
+    public function parse_tree_from_file($file){
+        ob_start();
+        $xml = parse_tree_from_file($file);
+        $error = ob_get_contents();
+        ob_end_clean();
+        if($error){
+            throw new Exception($error);
+        }else{
+            return $xml;
+        }
+    }
+
     public function aspects2classes($target){
         mkdir($target.'/_phpaspect/');
         copy(INSTALL_PATH.'include/functions.php', $target.'/_phpaspect/functions.php');
@@ -204,10 +219,11 @@ class Weaver{
         copy(INSTALL_PATH.'include/joinpoint.class.php', $target.'/_phpaspect/joinpoint.class.php');
         copy(INSTALL_PATH.'include/newjoinpoint.class.php', $target.'/_phpaspect/newjoinpoint.class.php');
         copy(INSTALL_PATH.'include/calljoinpoint.class.php', $target.'/_phpaspect/calljoinpoint.class.php');
+        copy(INSTALL_PATH.'include/execjoinpoint.class.php', $target.'/_phpaspect/execjoinpoint.class.php');
         foreach($this->aspects as $aspect){
             $this->includes[] = basename($aspect, 'aspect.php');
             XPathFunctions::clearPointcuts();
-            $xml = parse_tree_from_file($aspect);
+            $xml = $this->parse_tree_from_file($aspect);
             $this->xsltProc($xml, INSTALL_PATH.'xslt/toDynamicJP.xsl', __LINE__);
             $xml = $this->xsltProc($xml, INSTALL_PATH.'xslt/toXPath.xsl', __LINE__);
             file_put_contents($target.'/_phpaspect/'.basename($aspect, 'aspect.php').'class.php',
@@ -227,7 +243,6 @@ class Weaver{
             file_put_contents(INSTALL_PATH.'tmp/'.getmypid().basename($aspect, 'php').'after_exec',
                                 $this->xsltProc($xml, INSTALL_PATH.'xslt/toAfterExec.xsl', __LINE__));
             Test::clearAll();
-            unset($xml);
         }
     }
 }
