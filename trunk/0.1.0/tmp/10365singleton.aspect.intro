@@ -1,0 +1,107 @@
+<xsl:if xmlns:xsl="http://www.w3.org/1999/XSL/Transform" test="name(.) = 'php:class_statement_list' and &#10;                                                    parent::php:unticked_class_declaration_statement/php:class_entry_type&#10;                                                     and php:function('XPathFunctions::hasIntroduction', parent::php:unticked_class_declaration_statement/php:*[2]/text(), parent::php:unticked_class_declaration_statement/descendant::php:fully_qualified_class_name/php:T_STRING, 'false')"/><xsl:if xmlns:xsl="http://www.w3.org/1999/XSL/Transform" test="name(.) = 'php:class_statement_list' and &#10;                                                    parent::php:unticked_class_declaration_statement/php:class_entry_type&#10;                                                     and php:function('XPathFunctions::hasIntroduction', parent::php:unticked_class_declaration_statement/php:*[2]/text(), parent::php:unticked_class_declaration_statement/descendant::php:fully_qualified_class_name/php:T_STRING, 'false')"/><xsl:if xmlns:xsl="http://www.w3.org/1999/XSL/Transform" test="name(.) = 'php:class_statement_list' and &#10;                                                    parent::php:unticked_class_declaration_statement/php:class_entry_type&#10;                                                     and php:function('XPathFunctions::hasIntroduction', parent::php:unticked_class_declaration_statement/php:*[2]/text(), parent::php:unticked_class_declaration_statement/descendant::php:fully_qualified_class_name/php:T_STRING, 'Foo,Bar')"><php:introduction xmlns:php="http://php.net/xsl" xml:space="preserve"><php:method_modifiers id="id2396618">
+<php:non_empty_member_modifiers id="id2396623">
+<php:member_modifier id="id2396627">
+<php:T_PUBLIC id="id2396632">public</php:T_PUBLIC>
+</php:member_modifier>
+</php:non_empty_member_modifiers>
+</php:method_modifiers><php:T_FUNCTION id="id2396641">function</php:T_FUNCTION><php:T_STRING id="id2396716">__clone</php:T_STRING><php:CHAR40 id="id2396721">(</php:CHAR40><php:parameter_list id="id2396727">
+</php:parameter_list><php:CHAR41 id="id2397280">)</php:CHAR41><php:method_body id="id2397285">
+<php:CHAR123 id="id2397290">{</php:CHAR123>
+<php:inner_statement_list id="id2397295">
+<php:inner_statement_list id="id2397300">
+</php:inner_statement_list>
+<php:ACTION2 id="id2397305">
+</php:ACTION2>
+<php:inner_statement id="id2397311">
+<php:statement id="id2397315">
+<php:unticked_statement id="id2397320">
+<php:T_THROW id="id2397324">throw</php:T_THROW>
+<php:expr id="id2397330">
+<php:expr_without_variable id="id2397335">
+<php:T_NEW id="id2397339">new</php:T_NEW>
+<php:class_name_reference id="id2397345">
+<php:T_STRING id="id2397349">Exception</php:T_STRING>
+</php:class_name_reference>
+<php:ACTION41 id="id2397356">
+</php:ACTION41>
+<php:ctor_arguments id="id2397362">
+<php:CHAR40 id="id2397366">(</php:CHAR40>
+<php:function_call_parameter_list id="id2397372">
+<php:non_empty_function_call_parameter_list id="id2397376">
+<php:non_empty_function_call_parameter_list id="id2397381">
+<php:expr_without_variable id="id2397385">
+<php:expr id="id2397390">
+<php:expr_without_variable id="id2397394">
+<php:expr id="id2397399">
+<php:expr_without_variable id="id2397403">
+<php:scalar id="id2397408">
+<php:common_scalar id="id2397412">
+<php:T_CONSTANT_ENCAPSED_STRING id="id2397417">'Clone of '</php:T_CONSTANT_ENCAPSED_STRING>
+</php:common_scalar>
+</php:scalar>
+</php:expr_without_variable>
+</php:expr>
+<php:CHAR46 id="id2397428">.</php:CHAR46>
+<php:expr id="id2397433">
+<php:r_variable id="id2397438">
+<php:variable id="id2397442">
+<php:base_variable_with_function_calls id="id2397447">
+<php:function_call id="id2397451">
+<php:T_STRING id="id2397456">get_class</php:T_STRING>
+<php:CHAR40 id="id2397462">(</php:CHAR40>
+<php:ACTION49 id="id2397467">
+</php:ACTION49>
+<php:function_call_parameter_list id="id2397473">
+<php:non_empty_function_call_parameter_list id="id2397477">
+<php:variable id="id2397481">
+<php:base_variable_with_function_calls id="id2397486">
+<php:base_variable id="id2397490">
+<php:reference_variable id="id2397495">
+<php:compound_variable id="id2397500">
+<php:T_VARIABLE id="id2397504">$this</php:T_VARIABLE>
+</php:compound_variable>
+</php:reference_variable>
+</php:base_variable>
+</php:base_variable_with_function_calls>
+</php:variable>
+</php:non_empty_function_call_parameter_list>
+</php:function_call_parameter_list>
+<php:CHAR41 id="id2397517">)</php:CHAR41>
+</php:function_call>
+</php:base_variable_with_function_calls>
+</php:variable>
+</php:r_variable>
+</php:expr>
+</php:expr_without_variable>
+</php:expr>
+<php:CHAR46 id="id2397530">.</php:CHAR46>
+<php:expr id="id2397536">
+<php:expr_without_variable id="id2397540">
+<php:scalar id="id2397545">
+<php:common_scalar id="id2397549">
+<php:T_CONSTANT_ENCAPSED_STRING id="id2397554">' is not  allowed.'</php:T_CONSTANT_ENCAPSED_STRING>
+</php:common_scalar>
+</php:scalar>
+</php:expr_without_variable>
+</php:expr>
+</php:expr_without_variable>
+</php:non_empty_function_call_parameter_list>
+<php:CHAR44 id="id2397566">,</php:CHAR44>
+<php:expr_without_variable id="id2397572">
+<php:scalar id="id2397576">
+<php:T_STRING id="id2397581">E_USER_ERROR</php:T_STRING>
+</php:scalar>
+</php:expr_without_variable>
+</php:non_empty_function_call_parameter_list>
+</php:function_call_parameter_list>
+<php:CHAR41 id="id2397591">)</php:CHAR41>
+</php:ctor_arguments>
+</php:expr_without_variable>
+</php:expr>
+<php:CHAR59 id="id2397600">;</php:CHAR59>
+</php:unticked_statement>
+</php:statement>
+</php:inner_statement>
+</php:inner_statement_list>
+<php:CHAR125 id="id2397610">}</php:CHAR125>
+</php:method_body></php:introduction></xsl:if>
