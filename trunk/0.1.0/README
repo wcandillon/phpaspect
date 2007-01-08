@@ -36,7 +36,7 @@ aspect TraceOrder{
 
 DESCRIPTION:
 
-    What is Smarty?
+    What is phpAspect?
 
     phpAspect is a PHP language extension to implement
     Aspect-Oriented Programming. The phpAspect compiler 
@@ -57,10 +57,6 @@ DESCRIPTION:
     phpAspect contains all the "traditionnals" joinpoints of AOP. 
     However, The aim of this project is to offer an AOP which fit with 
     all the web-specifics concerns that php developers are facing.
-
-    Some of Smarty's features:
-
-    * it is extremely fast
 
 
 COPYRIGHT:
