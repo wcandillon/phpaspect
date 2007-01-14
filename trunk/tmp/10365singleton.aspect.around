@@ -1,0 +1,292 @@
+<xsl:if xmlns:xsl="http://www.w3.org/1999/XSL/Transform" test="(php:expr_without_variable/php:T_NEW&#10;                        and (php:function('XPathFunctions::isType', php:expr_without_variable/php:class_name_reference/php:T_STRING, 'Foo')&#10;                                or php:expr_without_variable/php:class_name_reference/php:dynamic_class_name_reference&#10;                                or false())&#10;                        and ((normalize-space('*') = '*') or (count(descendant::php:non_empty_function_call_parameter_list) = ''))) or (php:expr_without_variable/php:T_NEW&#10;                        and (php:function('XPathFunctions::isType', php:expr_without_variable/php:class_name_reference/php:T_STRING, 'Bar')&#10;                                or php:expr_without_variable/php:class_name_reference/php:dynamic_class_name_reference&#10;                                or false())&#10;                        and ((normalize-space('*') = '*') or (count(descendant::php:non_empty_function_call_parameter_list) = '')))"><php:T_IF xmlns:php="http://php.net/xsl">if</php:T_IF><php:CHAR40 xmlns:php="http://php.net/xsl">(</php:CHAR40><php:expr xmlns:php="http://php.net/xsl"><xsl:value-of select="concat(php:function('Test::isNewJpt', .//php:class_name_reference, 'Foo'),' || ',php:function('Test::isNewJpt', .//php:class_name_reference, 'Bar'), '')"/></php:expr><php:CHAR41 xmlns:php="http://php.net/xsl">)</php:CHAR41><php:CHAR123 xmlns:php="http://php.net/xsl">{</php:CHAR123><xsl:if test="php:expr_without_variable/php:T_NEW"><php:thisJoinpoint xmlns:php="http://php.net/xsl">$thisJoinPoint = new NewJoinPoint('', __LINE__, __FILE__, array(</php:thisJoinpoint><xsl:for-each select="descendant::php:function_call_parameter_list/php:non_empty_function_call_parameter_list"><xsl:copy-of select="."/></xsl:for-each><php:thisJoinpoint xmlns:php="http://php.net/xsl">), "</php:thisJoinpoint><xsl:copy-of select="php:expr_without_variable/php:class_name_reference"/><php:thisJoinpoint xmlns:php="http://php.net/xsl">");</php:thisJoinpoint></xsl:if><xsl:if test="php:T_OBJECT_OPERATOR"><php:thisJoinpoint xmlns:php="http://php.net/xsl">$thisJoinPoint = new CallJoinPoint('', __LINE__, __FILE__, array(</php:thisJoinpoint><xsl:for-each select="descendant::php:function_call_parameter_list/php:non_empty_function_call_parameter_list"><xsl:copy-of select="."/></xsl:for-each><php:thisJoinpoint xmlns:php="http://php.net/xsl">), </php:thisJoinpoint><xsl:copy-of select="php:T_VARIABLE[2]"/><php:thisJoinpoint xmlns:php="http://php.net/xsl">, '</php:thisJoinpoint><xsl:copy-of select="php:object_property"/><php:thisJoinpoint xmlns:php="http://php.net/xsl">');</php:thisJoinpoint></xsl:if><php:inner_statement_list xmlns:php="http://php.net/xsl" id="id2394100">
+<php:inner_statement_list id="id2394104">
+<php:inner_statement_list id="id2394108">
+<php:inner_statement_list id="id2394112">
+</php:inner_statement_list>
+<php:ACTION2 id="id2394118">
+</php:ACTION2>
+<php:inner_statement id="id2394123">
+<php:statement id="id2394127">
+<php:unticked_statement id="id2394131">
+<php:expr id="id2394135">
+<php:expr_without_variable id="id2394139">
+<php:variable id="id2394144">
+<php:base_variable_with_function_calls id="id2394978">
+<php:base_variable id="id2394981">
+<php:reference_variable id="id2393866">
+<php:compound_variable id="id2395056">
+<php:T_VARIABLE id="id2393878">$className</php:T_VARIABLE>
+</php:compound_variable>
+</php:reference_variable>
+</php:base_variable>
+</php:base_variable_with_function_calls>
+</php:variable>
+<php:CHAR61 id="id2395072">=</php:CHAR61>
+<php:expr id="id2395077">
+<php:r_variable id="id2395081">
+<php:variable id="id2395086">
+<php:base_variable_with_function_calls id="id2395090">
+<php:base_variable id="id2395094">
+<php:reference_variable id="id2395098">
+<php:compound_variable id="id2394428">
+<php:T_VARIABLE id="id2394435">$thisJoinPoint</php:T_VARIABLE>
+</php:compound_variable>
+</php:reference_variable>
+</php:base_variable>
+</php:base_variable_with_function_calls>
+<php:T_OBJECT_OPERATOR id="id2394445">-&gt;</php:T_OBJECT_OPERATOR>
+<php:ACTION57 id="id2394450">
+</php:ACTION57>
+<php:object_property id="id2394455">
+<php:object_dim_list id="id2394459">
+<php:variable_name id="id2394464">
+<php:T_STRING id="id2394468">getClassName</php:T_STRING>
+</php:variable_name>
+</php:object_dim_list>
+</php:object_property>
+<php:ACTION58 id="id2394476">
+</php:ACTION58>
+<php:method_or_not id="id2394481">
+<php:CHAR40 id="id2394485">(</php:CHAR40>
+<php:ACTION60 id="id2394491">
+</php:ACTION60>
+<php:function_call_parameter_list id="id2394496">
+</php:function_call_parameter_list>
+<php:CHAR41 id="id2394501">)</php:CHAR41>
+</php:method_or_not>
+<php:variable_properties id="id2394507">
+</php:variable_properties>
+</php:variable>
+</php:r_variable>
+</php:expr>
+</php:expr_without_variable>
+</php:expr>
+<php:CHAR59 id="id2394518">;</php:CHAR59>
+</php:unticked_statement>
+</php:statement>
+</php:inner_statement>
+</php:inner_statement_list>
+<php:ACTION2 id="id2394527">
+</php:ACTION2>
+<php:inner_statement id="id2394532">
+<php:statement id="id2394537">
+<php:unticked_statement id="id2394541">
+<php:T_IF id="id2394545">if</php:T_IF>
+<php:CHAR40 id="id2394550">(</php:CHAR40>
+<php:expr id="id2394555">
+<php:expr_without_variable id="id2394559">
+<php:CHAR33 id="id2394564">!</php:CHAR33>
+<php:expr id="id2394569">
+<php:expr_without_variable id="id2394573">
+<php:internal_functions_in_yacc id="id2394577">
+<php:T_ISSET id="id2394581">isset</php:T_ISSET>
+<php:CHAR40 id="id2394586">(</php:CHAR40>
+<php:isset_variables id="id2394592">
+<php:variable id="id2394596">
+<php:base_variable_with_function_calls id="id2394601">
+<php:base_variable id="id2394605">
+<php:reference_variable id="id2394609">
+<php:compound_variable id="id2394614">
+<php:T_VARIABLE>$GLOBALS['__phpaspect']['Singleton']</php:T_VARIABLE>
+</php:compound_variable>
+</php:reference_variable>
+</php:base_variable>
+</php:base_variable_with_function_calls>
+<php:T_OBJECT_OPERATOR id="id2394628">-&gt;</php:T_OBJECT_OPERATOR>
+<php:ACTION57 id="id2394634">
+</php:ACTION57>
+<php:object_property id="id2394639">
+<php:object_dim_list id="id2394644">
+<php:object_dim_list id="id2394648">
+<php:variable_name id="id2394653">
+<php:T_STRING id="id2394658">instances</php:T_STRING>
+</php:variable_name>
+</php:object_dim_list>
+<php:CHAR91 id="id2394665">[</php:CHAR91>
+<php:dim_offset id="id2394671">
+<php:expr id="id2394676">
+<php:r_variable id="id2394680">
+<php:variable id="id2394685">
+<php:base_variable_with_function_calls id="id2394689">
+<php:base_variable id="id2394694">
+<php:reference_variable id="id2394698">
+<php:compound_variable id="id2395985">
+<php:T_VARIABLE id="id2395989">$className</php:T_VARIABLE>
+</php:compound_variable>
+</php:reference_variable>
+</php:base_variable>
+</php:base_variable_with_function_calls>
+</php:variable>
+</php:r_variable>
+</php:expr>
+</php:dim_offset>
+<php:CHAR93 id="id2396003">]</php:CHAR93>
+</php:object_dim_list>
+</php:object_property>
+<php:ACTION58 id="id2396010">
+</php:ACTION58>
+<php:method_or_not id="id2396016">
+</php:method_or_not>
+<php:variable_properties id="id2396021">
+</php:variable_properties>
+</php:variable>
+</php:isset_variables>
+<php:CHAR41 id="id2396028">)</php:CHAR41>
+</php:internal_functions_in_yacc>
+</php:expr_without_variable>
+</php:expr>
+</php:expr_without_variable>
+</php:expr>
+<php:CHAR41 id="id2396039">)</php:CHAR41>
+<php:ACTION3 id="id2396044">
+</php:ACTION3>
+<php:statement id="id2396050">
+<php:unticked_statement id="id2396054">
+<php:CHAR123 id="id2396059">{</php:CHAR123>
+<php:inner_statement_list id="id2396064">
+<php:inner_statement_list id="id2396069">
+</php:inner_statement_list>
+<php:ACTION2 id="id2396074">
+</php:ACTION2>
+<php:inner_statement id="id2396080">
+<php:statement id="id2396084">
+<php:unticked_statement id="id2396088">
+<php:expr id="id2396092">
+<php:expr_without_variable id="id2396096">
+<php:variable id="id2396101">
+<php:base_variable_with_function_calls id="id2396105">
+<php:base_variable id="id2396110">
+<php:reference_variable id="id2396114">
+<php:compound_variable id="id2396119">
+<php:T_VARIABLE>$GLOBALS['__phpaspect']['Singleton']</php:T_VARIABLE>
+</php:compound_variable>
+</php:reference_variable>
+</php:base_variable>
+</php:base_variable_with_function_calls>
+<php:T_OBJECT_OPERATOR id="id2396133">-&gt;</php:T_OBJECT_OPERATOR>
+<php:ACTION57 id="id2396139">
+</php:ACTION57>
+<php:object_property id="id2396144">
+<php:object_dim_list id="id2396149">
+<php:object_dim_list id="id2396153">
+<php:variable_name id="id2396158">
+<php:T_STRING id="id2396162">instances</php:T_STRING>
+</php:variable_name>
+</php:object_dim_list>
+<php:CHAR91 id="id2396170">[</php:CHAR91>
+<php:dim_offset id="id2396175">
+<php:expr id="id2396180">
+<php:r_variable id="id2396184">
+<php:variable id="id2396189">
+<php:base_variable_with_function_calls id="id2396193">
+<php:base_variable id="id2396198">
+<php:reference_variable id="id2396202">
+<php:compound_variable id="id2396207">
+<php:T_VARIABLE id="id2396211">$className</php:T_VARIABLE>
+</php:compound_variable>
+</php:reference_variable>
+</php:base_variable>
+</php:base_variable_with_function_calls>
+</php:variable>
+</php:r_variable>
+</php:expr>
+</php:dim_offset>
+<php:CHAR93 id="id2396225">]</php:CHAR93>
+</php:object_dim_list>
+</php:object_property>
+<php:ACTION58 id="id2396233">
+</php:ACTION58>
+<php:method_or_not id="id2396239">
+</php:method_or_not>
+<php:variable_properties id="id2396244">
+</php:variable_properties>
+</php:variable>
+<php:CHAR61 id="id2396251">=</php:CHAR61>
+<php:expr id="id2396324">
+<php:r_variable id="id2396328">
+<php:variable id="id2396333">
+<php:base_variable_with_function_calls id="id2396337">
+<xsl:copy-of select="php:function('XPathFunctions::getProceed')"/>
+</php:base_variable_with_function_calls>
+</php:variable>
+</php:r_variable>
+</php:expr>
+</php:expr_without_variable>
+</php:expr>
+<php:CHAR59 id="id2396382">;</php:CHAR59>
+</php:unticked_statement>
+</php:statement>
+</php:inner_statement>
+</php:inner_statement_list>
+<php:CHAR125 id="id2396392">}</php:CHAR125>
+</php:unticked_statement>
+</php:statement>
+<php:ACTION4 id="id2396400">
+</php:ACTION4>
+<php:elseif_list id="id2396405">
+</php:elseif_list>
+<php:else_single id="id2396411">
+</php:else_single>
+</php:unticked_statement>
+</php:statement>
+</php:inner_statement>
+</php:inner_statement_list>
+<php:ACTION2 id="id2396421">
+</php:ACTION2>
+<php:inner_statement id="id2396426">
+<php:statement id="id2396431">
+<php:unticked_statement id="id2396436">
+<php:T_VARIABLE>$__return_result</php:T_VARIABLE><php:CHAR61>=</php:CHAR61>
+<php:variable id="id2396446">
+<php:base_variable_with_function_calls id="id2396450">
+<php:base_variable id="id2396455">
+<php:reference_variable id="id2396459">
+<php:compound_variable id="id2396464">
+<php:T_VARIABLE>$GLOBALS['__phpaspect']['Singleton']</php:T_VARIABLE>
+</php:compound_variable>
+</php:reference_variable>
+</php:base_variable>
+</php:base_variable_with_function_calls>
+<php:T_OBJECT_OPERATOR id="id2396478">-&gt;</php:T_OBJECT_OPERATOR>
+<php:ACTION57 id="id2396484">
+</php:ACTION57>
+<php:object_property id="id2396489">
+<php:object_dim_list id="id2396494">
+<php:object_dim_list id="id2396498">
+<php:variable_name id="id2396503">
+<php:T_STRING id="id2396508">instances</php:T_STRING>
+</php:variable_name>
+</php:object_dim_list>
+<php:CHAR91 id="id2396515">[</php:CHAR91>
+<php:dim_offset id="id2396521">
+<php:expr id="id2396525">
+<php:r_variable id="id2396530">
+<php:variable id="id2396534">
+<php:base_variable_with_function_calls id="id2396539">
+<php:base_variable id="id2396543">
+<php:reference_variable id="id2396548">
+<php:compound_variable id="id2396552">
+<php:T_VARIABLE id="id2396557">$className</php:T_VARIABLE>
+</php:compound_variable>
+</php:reference_variable>
+</php:base_variable>
+</php:base_variable_with_function_calls>
+</php:variable>
+</php:r_variable>
+</php:expr>
+</php:dim_offset>
+<php:CHAR93 id="id2396571">]</php:CHAR93>
+</php:object_dim_list>
+</php:object_property>
+<php:ACTION58 id="id2396579">
+</php:ACTION58>
+<php:method_or_not id="id2396584">
+</php:method_or_not>
+<php:variable_properties id="id2396590">
+</php:variable_properties>
+</php:variable>
+<php:CHAR59 id="id2396596">;</php:CHAR59>
+</php:unticked_statement>
+</php:statement>
+</php:inner_statement>
+</php:inner_statement_list><php:thisJoinpoint xmlns:php="http://php.net/xsl">unset($thisJoinPoint);</php:thisJoinpoint><xsl:value-of select="php:function('XPathFunctions::setWeaved', true())"/><php:CHAR125 xmlns:php="http://php.net/xsl">}</php:CHAR125><php:T_ELSE xmlns:php="http://php.net/xsl">else</php:T_ELSE><php:CHAR123 xmlns:php="http://php.net/xsl">{</php:CHAR123><xsl:copy-of select="."/><php:T_VARIABLE xmlns:php="http://php.net/xsl">$__return_result</php:T_VARIABLE><php:CHAR61 xmlns:php="http://php.net/xsl"> = </php:CHAR61><xsl:copy-of select="./php:T_VARIABLE[1]"/><php:CHAR59 xmlns:php="http://php.net/xsl">;</php:CHAR59><php:CHAR125 xmlns:php="http://php.net/xsl">}</php:CHAR125></xsl:if>
