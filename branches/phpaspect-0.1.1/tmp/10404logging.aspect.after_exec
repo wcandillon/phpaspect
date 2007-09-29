@@ -1,0 +1,109 @@
+<xsl:if xmlns:xsl="http://www.w3.org/1999/XSL/Transform" test="(name()='php:class_statement' and not(//php:method_body/php:CHAR59) and&#10;                not(ancestor::php:unticked_class_declaration_statement[1]/php:interface_entry) &#10;                and (ancestor::php:unticked_class_declaration_statement[1]/php:T_STRING = 'Order' or php:function('XPathFunctions::isMethodName', ancestor::php:unticked_class_declaration_statement[1]/php:T_STRING, 'Order'))&#10;                and (php:T_STRING = 'addItem' or php:function('XPathFunctions::isMethodName', php:T_STRING, 'addItem')) &#10;                and (normalize-space(php:method_modifiers) = 'public'&#10;                 or  'public'='*')&#10;                )"><xsl:copy><php:thisJoinpoint xmlns:php="http://php.net/xsl">$thisJoinPoint = new ExecJoinPoint('', __LINE__, __FILE__, array(</php:thisJoinpoint><xsl:for-each select="descendant::php:parameter_list/php:non_empty_parameter_list//php:T_VARIABLE"><xsl:copy-of select="."/><php:CHAR44 xmlns:php="http://php.net/xsl">,</php:CHAR44></xsl:for-each><php:thisJoinpoint xmlns:php="http://php.net/xsl">), </php:thisJoinpoint><php:T_VARIABLE xmlns:php="http://php.net/xsl">$this</php:T_VARIABLE><php:thisJoinpoint xmlns:php="http://php.net/xsl">, '</php:thisJoinpoint><xsl:copy-of select="php:T_STRING"/><php:thisJoinpoint xmlns:php="http://php.net/xsl">');</php:thisJoinpoint><xsl:variable name="advice_name" select="php:function('Counter::getId')"/><php:function xmlns:php="http://php.net/xsl">if(!function_exists('</php:function><php:T_STRING xmlns:php="http://php.net/xsl">__phpaspect<xsl:value-of select="$advice_name"/></php:T_STRING><php:function xmlns:php="http://php.net/xsl">')){ function</php:function><php:T_STRING xmlns:php="http://php.net/xsl"> __phpaspect
+        <xsl:value-of select="$advice_name"/></php:T_STRING><php:CHAR40 xmlns:php="http://php.net/xsl">(</php:CHAR40><php:T_VARIABLE xmlns:php="http://php.net/xsl">$thisJoinPoint</php:T_VARIABLE><php:CHAR44 xmlns:php="http://php.net/xsl">,</php:CHAR44><php:variable xmlns:php="http://php.net/xsl" id="id2394381">
+<php:base_variable_with_function_calls id="id2394386">
+<php:base_variable id="id2394391">
+<php:reference_variable id="id2394395">
+<php:compound_variable id="id2394400">
+<php:T_VARIABLE id="id2394405">$quantity</php:T_VARIABLE>
+</php:compound_variable>
+</php:reference_variable>
+</php:base_variable>
+</php:base_variable_with_function_calls>
+</php:variable><php:CHAR44 xmlns:php="http://php.net/xsl">,</php:CHAR44><php:variable xmlns:php="http://php.net/xsl" id="id2394428">
+<php:base_variable_with_function_calls id="id2394433">
+<php:base_variable id="id2394438">
+<php:reference_variable id="id2394442">
+<php:compound_variable id="id2394447">
+<php:T_VARIABLE id="id2394451">$reference</php:T_VARIABLE>
+</php:compound_variable>
+</php:reference_variable>
+</php:base_variable>
+</php:base_variable_with_function_calls>
+</php:variable><php:CHAR41 xmlns:php="http://php.net/xsl">)</php:CHAR41><php:CHAR123 xmlns:php="http://php.net/xsl">{</php:CHAR123><xsl:copy>
+
+
+
+
+
+
+
+
+
+
+
+
+printf
+(
+
+
+
+
+
+
+
+
+
+"%d %s added to the cart\n"
+
+
+
+
+,
+
+
+
+
+
+$quantity
+
+
+
+
+
+
+,
+
+
+
+
+
+$reference
+
+
+
+
+
+
+
+)
+
+
+
+
+
+;
+
+
+
+</xsl:copy><php:CHAR125 xmlns:php="http://php.net/xsl">}}</php:CHAR125><php:T_STRING xmlns:php="http://php.net/xsl">__phpaspect
+        <xsl:value-of select="php:function('Counter::getId')"/></php:T_STRING><php:CHAR40 xmlns:php="http://php.net/xsl">(</php:CHAR40><php:T_VARIABLE xmlns:php="http://php.net/xsl">$thisJoinPoint</php:T_VARIABLE><php:CHAR44 xmlns:php="http://php.net/xsl">,</php:CHAR44><php:variable xmlns:php="http://php.net/xsl" id="id2394381">
+<php:base_variable_with_function_calls id="id2394386">
+<php:base_variable id="id2394391">
+<php:reference_variable id="id2394395">
+<php:compound_variable id="id2394400">
+<php:T_VARIABLE id="id2394405">$quantity</php:T_VARIABLE>
+</php:compound_variable>
+</php:reference_variable>
+</php:base_variable>
+</php:base_variable_with_function_calls>
+</php:variable><php:CHAR44 xmlns:php="http://php.net/xsl">,</php:CHAR44><php:variable xmlns:php="http://php.net/xsl" id="id2394428">
+<php:base_variable_with_function_calls id="id2394433">
+<php:base_variable id="id2394438">
+<php:reference_variable id="id2394442">
+<php:compound_variable id="id2394447">
+<php:T_VARIABLE id="id2394451">$reference</php:T_VARIABLE>
+</php:compound_variable>
+</php:reference_variable>
+</php:base_variable>
+</php:base_variable_with_function_calls>
+</php:variable><php:CHAR41 xmlns:php="http://php.net/xsl">)</php:CHAR41><php:CHAR59 xmlns:php="http://php.net/xsl">;</php:CHAR59><php:thisJoinpoint xmlns:php="http://php.net/xsl">unset($thisJoinPoint);</php:thisJoinpoint></xsl:copy></xsl:if>
