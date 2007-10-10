@@ -1,18 +1,37 @@
 <?php
-require_once 'PHPAspect/Weaver/Weaver.php';
-require_once 'PHPAspect/Weaver/FileManager.php';
-require_once 'PHPAspect/Weaver/WeavingPreferences.php';
+/*******************************************************************************
+ * Copyright (c) 2006-2007 William Candillon.
+ * All rights reserved.
+ * This program and the accompanying materials are made available
+ * under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution and is available at
+ * http://eclipse.org/legal/epl-v10.html
+ *
+ * @author William Candillon <wcandillon@elv.telecom-lille1.eu>
+ * @category   PHP
+ * @package    PHPAspect/Weaver
+ * @author     William Candillon <wcandillon@elv.telecom-lille1.eu>
+ * @license    http://eclipse.org/legal/epl-v10.html EPL
+ * @version    1.0.0
+ * @link       http://phpaspect.org
+ *******************************************************************************/
 
-class PHPAspectWeaver extends XSLWeaver implements Weaver{
+//namespace PHPAspect::Weaver;
+
+require_once 'PHPAspect/Weaver/Weaver.php';
+require_once 'PHPAspect/Weaver/WeavingPreferences.php';
+require_once 'PHPAspect/Weaver/XSLTWeaver.php';
+
+class PHPAspectWeaver extends XSLTWeaver implements Weaver{
     
     private $aspectURLs  = array();
     private $phpFileURLs = array();
     private $options;
-        
+
     const PHPASPECT_CONTENTTYPE = 'ap';
     const PHP_CONTENTTYPE       = 'php, php3, php4, php5, phtml, inc';
 
-    public function __construct(WeavingOptions $options=null, $aspectURLs=null, $phpFileURLs=null){
+    public function __construct(WeavingPreferences $options=null, $aspectURLs=null, $phpFileURLs=null){
         if($options){
             $this->options = $options;    
         }
@@ -162,7 +181,7 @@ class PHPAspectWeaver extends XSLWeaver implements Weaver{
     }
     
     public function resetWeavingPreferences(){
-        $this->options = new WeavingPreferences();
+        $this->options->setDefaults();
     }
     
     public function reset(){
@@ -172,7 +191,7 @@ class PHPAspectWeaver extends XSLWeaver implements Weaver{
     }
 
     
-    public function weave($destinationURL){
+    public function weave(){
         if(!is_dir($destinationURL)){
             throw new MalformedURLException($directory);
         }elseif(!is_writable($destinationURL)){
@@ -185,7 +204,9 @@ class PHPAspectWeaver extends XSLWeaver implements Weaver{
             XSLTWeaver::generateAspectRuntimeEntities($aspect, $aspectDir);
         }
     }
-    
+    public function weaveIn($destinationURL){
+        
+    }
     public function weaveFile($fileURL){}
     public function weaveFileIn($fileURL, $destinationURL){}
     public function weaveString($string){}
