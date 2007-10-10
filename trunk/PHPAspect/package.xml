@@ -38,33 +38,12 @@ http://pear.php.net/dtd/package-2.0.xsd">
     <license uri="http://www.eclipse.org/legal/epl-v10.html" filesource="LICENSE">Eclipse Public License - v 1.0</license>
     <notes></notes>
     <contents>
-			<dir name="Weaver">
-				<file name="PHPAspectWeaver.php" role="src"></file>
+        <dir name="/">
+			<dir name="Documentation/en">
+				<file name="index.html" role="doc" />
 			</dir>
-        <dir name='/'>
-        <file role='doc' name='EXPERIMENTAL'/>
-        <file role='doc' name='CREDITS'/>
-            <file role='doc' name='LICENSE'/>
-            <file role='doc' name='README'/>
-        <file role='src' name='config.m4'/>
-        <file role='src' name='config.w32'/>
-            <file role='src' name='parse_tree.dsp'/>
-        <file role='src' name='parse_tree.c'/>
-        <file role='src' name='php_parse_tree.h'/>
-            <file role='src' name='zend_language_scanner.c'/>
-            <file role='src' name='zend_language_parser.c'/>
-            <file role='src' name='zend_language_parser.h'/>
-            <dir name='examples'>
-                    <dir name='ex1'>
-                            <file name='parser.php' role='doc'/>
-                            <file name='sample.php' role='doc'/>
-                            <file name='sample.png' role='doc'/>
-                    </dir>
-            </dir>
-            <dir name='xslt'>
-                    <file name='toWrite.xsl' role='doc'/>
-            </dir>
-        </dir>
+			<file name="README" role="doc" /> 
+       </dir>
     </contents>
     <dependencies>
         <required>
@@ -76,4 +55,5 @@ http://pear.php.net/dtd/package-2.0.xsd">
         </pearinstaller>
         </required>
     </dependencies>
+    
 </package-->

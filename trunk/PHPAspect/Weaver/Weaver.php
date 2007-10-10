@@ -1,7 +1,7 @@
 <?php
 interface Weaver{
     
-    public function __construct(WeavingOptions $options=null, $aspectURLs=null, $phpFileURLs=null);
+    public function __construct(WeavingPreferences $options=null, $aspectURLs=null, $phpFileURLs=null);
     
     public function addAspects($directory, $recursive=true);
     

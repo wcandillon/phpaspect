@@ -13,3 +13,10 @@
 <!--
 
 -->
+<xsl:stylesheet version="1.0" xmlns="&xsl;" xmlns:xsl="&xsl;" xmlns:php="&php;">
+    <xsl:output method="text" indent="no"/>
+	<xsl:template match="php:aspect_declaration_statement">
+		<xsl:text>class</xsl:text>
+	</xsl:template>
+</xsl:stylesheet>
+
