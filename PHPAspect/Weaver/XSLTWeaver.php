@@ -8,18 +8,12 @@ abstract class XSLTWeaver{
     const XSLT_TOCLASS = 'XSLT/toClass.xsl';
     const XSLT_TOXSLT  = 'XSLT/toXSLT.xsl';
     
-    public function generateAspectRuntimeEntities($aspectURL, $destination){
-        $aspectXML = parse_tree_from_file($aspectURL);
-        $classXML = self::process($aspectURL, self::XSLT_TOCLASS);
-        self::processFileIn($xml, self::XSLT_TOWRITE, $destination); 
-    }
-    
     private static function processFileIn($file, $xsl, $destination){
-        file_put_contents($destination, $this->process($file, $xml));
+        file_put_contents($destination, $this->process($file, $xsl));
     }
     
     private static function processFile($file, $xsl){
-        file_put_contents($file, $this->process($file, $xml));
+        file_put_contents($file, $this->process($file, $xsl));
     }
     
     /*

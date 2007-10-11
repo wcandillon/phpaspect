@@ -16,7 +16,7 @@ class MalformedURLException extends Exception{
             default:
                 $message = 'No such ressource:';
         }
-        super::__construct($message.$url.' (include_path='.get_include_path().')');
+        parent::__construct($message.$url.' (include_path='.get_include_path().')');
         $this->url = $url;
     }
 }

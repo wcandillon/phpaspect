@@ -2,6 +2,7 @@
 
 require_once 'Console/Getopt.php';
 require_once 'PHPAspect/Weaver/WeavingPreferences.php';
+require_once 'PHPAspect/Utils/FileSystem.php';
 
 class Console extends Console_Getopt{
 
@@ -46,6 +47,16 @@ class Console extends Console_Getopt{
      * @see     usage
      */
     private $code;
+    
+    /**
+     * Remove the targeted directory
+     *
+     * @name    beautify
+     * @access  private
+     * @var     boolean
+     * @see     usage
+     */
+    private $remove = false;
 
     /**
      * Short options
@@ -55,7 +66,7 @@ class Console extends Console_Getopt{
      * @var     string
      * @see     http://pear.php.net/manual/en/package.console.console-getopt.intro-options.php
      */
-    private $shortOptions = 'vVr:ehb';
+    private $shortOptions = 'vVr:ehbd';
 
     /**
      * Long options
@@ -199,26 +210,32 @@ class Console extends Console_Getopt{
                     $this->weavingPreferences->setBeautify(true);
                 case 'r':
                     $this->code = $o[1];
+                case 'd':
+                	$this->remove = true;
             }
         }
-
-        if(!isset($opt[1][0]) || !isset($opt[1][1]) || !isset($opt[1][2])){
-            throw new Exception($this->usage());
-        }elseif(!is_dir($opt[1][0])){
-            throw new Exception($opt[1][0]." isn't a valid directory");
-        }elseif(!is_dir($opt[1][1])){
-            throw new Exception($opt[1][1]." isn't a valid directory");
-        }
-
+		
         $this->aspects = $opt[1][0];
         $this->source  = $opt[1][1];
         $this->target  = $opt[1][2];
-
-        if(is_dir($this->target) && (!$this->remove || !$this->rmdir($this->target))){
+        
+        $this->weavingPreferences->setRuntimeIncludePath($this->target);
+        
+        if(!isset($this->aspects) || !isset($this->source) || !isset($this->target)){
+            throw new Exception($this->usage());
+        }elseif(!is_dir($this->aspects)){
+            throw new Exception($this->aspects." isn't a valid directory");
+        }elseif(!is_dir($this->source)){
+            throw new Exception($this->source." isn't a valid directory");
+        }
+        
+        if(!is_writable($this->target) && !mkdir($this->target)){
             throw new Exception($this->target." isn't a writable directory");
         }
-        if(!mkdir($this->target)){
-            throw new Exception("Couldn't create the ".$this->target." directory");
+        
+        if($this->remove){
+        	FileSystem::rmdir($this->target);
+        	mkdir($this->target);
         }
     }
 
