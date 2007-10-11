@@ -21,19 +21,20 @@
 require_once 'PHPAspect/Weaver/Weaver.php';
 require_once 'PHPAspect/Weaver/WeavingPreferences.php';
 require_once 'PHPAspect/Weaver/XSLTWeaver.php';
+require_once 'PHPAspect/Weaver/MalformedURLException.php';
 
 class PHPAspectWeaver extends XSLTWeaver implements Weaver{
     
     private $aspectURLs  = array();
     private $phpFileURLs = array();
-    private $options;
+    private $weavingPreferences;
 
     const PHPASPECT_CONTENTTYPE = 'ap';
     const PHP_CONTENTTYPE       = 'php, php3, php4, php5, phtml, inc';
 
     public function __construct(WeavingPreferences $options=null, $aspectURLs=null, $phpFileURLs=null){
         if($options){
-            $this->options = $options;    
+            $this->weavingPreferences = $options;    
         }
         
         if(is_dir($aspectURLs)){
@@ -52,7 +53,7 @@ class PHPAspectWeaver extends XSLTWeaver implements Weaver{
             $this->addPHPFiles($phpFileURLs);
         }elseif(is_string($phpFileURLs)){
             $this->addPHPFileURL($phpFileURLs);
-        }elseif(is_array($fileURLs)){
+        }elseif(is_array($phpFileURLs)){
             foreach($phpFileURLs as $url){
                 $this->addPHPFileURL($url);
             }
@@ -67,8 +68,14 @@ class PHPAspectWeaver extends XSLTWeaver implements Weaver{
         }
         
         $files = scandir($directory);
+        
         foreach($files as $fileName){
+        	if($fileName == '.' || $fileName == '..'){
+        		continue;
+        	}
+        	
             $url = $directory.DIRECTORY_SEPARATOR.$fileName;
+            
             if(is_dir($url) && $recursive){
                 $this->addAspects($url, true);
             }elseif($this->isAspectURL($url)){
@@ -87,8 +94,9 @@ class PHPAspectWeaver extends XSLTWeaver implements Weaver{
     
     protected function isPHPFileUrl($fileURL){
         if(!is_file($fileURL)){
-            throw MalformedURLException($fileURL);
+            throw new MalformedURLException($fileURL);
         }
+        $contentType = pathinfo($fileURL, PATHINFO_EXTENSION);
         return eregi($contentType, self::PHP_CONTENTTYPE);
     }
     
@@ -99,6 +107,10 @@ class PHPAspectWeaver extends XSLTWeaver implements Weaver{
         
         $files = scandir($directory);
         foreach($files as $fileName){
+        	if($fileName == '.' || $fileName == '..'){
+        		continue;
+        	}
+        	
             $url = $directory.DIRECTORY_SEPARATOR.$fileName;
             if(is_dir($url) && $recursive){
                 $this->addPHPFiles($url, true);
@@ -114,10 +126,11 @@ class PHPAspectWeaver extends XSLTWeaver implements Weaver{
     
     public function getAspectURL($aspectName){
         foreach($this->aspectURLs as $key => $url){
-            if($fileName == pathinfo($url, PATHINFO_FILENAME)){
+            if($aspectName == pathinfo($url, PATHINFO_FILENAME)){
                 return $this->aspectURLs[$key];
             }
-        }        
+        }
+        return false;        
     }
     
     public function setAspectURLs(array $aspectURLs){
@@ -134,7 +147,7 @@ class PHPAspectWeaver extends XSLTWeaver implements Weaver{
     
     public function removeAspectURL($aspectName){
         foreach($this->aspectURLs as $key => $url){
-            if($fileName == pathinfo($url, PATHINFO_FILENAME)){
+            if($aspectName == pathinfo($url, PATHINFO_FILENAME)){
                 unset($this->aspectURLs[$key]);
             }
         }
@@ -144,12 +157,13 @@ class PHPAspectWeaver extends XSLTWeaver implements Weaver{
         return $this->fileURLs;
     }
     
-    public function getPHPFileURL($filename){
+    public function getPHPFileURL($fileName){
         foreach($this->fileURLs as $key => $url){
             if($fileName == pathinfo($url, PATHINFO_FILENAME)){
                 return $this->fileURLs[$key];
             }
         }
+        return false;
     }
     
     public function setPHPFileURLs(array $fileURLs){
@@ -160,7 +174,7 @@ class PHPAspectWeaver extends XSLTWeaver implements Weaver{
     
     public function addPHPFileURL($phpFileURL){
         if($this->isPHPFileURL($phpFileURL)){
-            $this->phpFileURLs[] = $fileURL;
+            $this->phpFileURLs[] = $phpFileURL;
         }
     }
     
@@ -172,12 +186,12 @@ class PHPAspectWeaver extends XSLTWeaver implements Weaver{
         }
     }
     
-    public function getWeavingOptions(){
-        $this->options;
+    public function getWeavingPreferences(){
+        $this->weavingPreferences;
     }
     
     public function setWeavingPreferences(WeavingPreferences $options){
-        $this->options;
+        $this->options = $options;
     }
     
     public function resetWeavingPreferences(){
@@ -192,66 +206,37 @@ class PHPAspectWeaver extends XSLTWeaver implements Weaver{
 
     
     public function weave(){
-        if(!is_dir($destinationURL)){
-            throw new MalformedURLException($directory);
-        }elseif(!is_writable($destinationURL)){
-            throw new Exception("$destinationURL isn't writable");
-        }
-        //Put a lock on the directory
-        $aspectDir = $destinationURL.'/aspects';
-        mkdir($aspectDir);
-        foreach($his->aspectURLs as $aspect){
-            XSLTWeaver::generateAspectRuntimeEntities($aspect, $aspectDir);
-        }
+        $rtIncludePath =  $this->weavingPreferences->getRuntimeIncludePath();
+        mkdir($rtIncludePath);
+        $this->generateAspectRuntimeEntities($rtIncludePath);
     }
-    public function weaveIn($destinationURL){
-        
-    }
+    
     public function weaveFile($fileURL){}
     public function weaveFileIn($fileURL, $destinationURL){}
-    public function weaveString($string){}
+    
+    public function weaveString($string){
+    
+    }
     public function weaveStringIn($string, $destinationURL){}
+    
+    private function generateAspectRuntimeEntities($destination){
+    	foreach ($this->aspectURLs as $aspectURL){
+	        $aspectXML = parse_tree_from_file($aspectURL);
+	        var_dump($aspectXML);
+	        $classXML  = self::process($aspectXML, self::XSLT_TOCLASS);
+	        $target    = $destination.$this->getFileName($aspectURL);
+	        self::processFileIn($classXML, self::XSLT_TOWRITE, $target);
+    	} 
+    }
     
     private function getFileName($url){
         return pathinfo($url, PATHINFO_FILENAME);
     }
     
-    /**
-     * Copy a file, or recursively copy a folder and its contents
-     *
-     * @author      Aidan Lister <aidan@php.net>
-     * @version     1.0.1
-     * @link        http://aidanlister.com/repos/v/function.copyr.php
-     * @param       string   $source    Source path
-     * @param       string   $dest      Destination path
-     * @return      bool     Returns TRUE on success, FALSE on failure
-     */
-    private function copyr($source, $dest){
-        // Simple copy for a file
-        if (is_file($source)) {
-            return copy($source, $dest);
-        }
-    
-        // Make destination directory
-        if (!is_dir($dest)) {
-            mkdir($dest);
-        }
-
-        // Loop through the folder
-        $dir = dir($source);
-        while (false !== $entry = $dir->read()) {
-            // Skip pointers
-            if ($entry == '.' || $entry == '..') {
-                continue;
-            }
-            // Deep copy directories
-            if ($dest !== "$source/$entry") {
-                copyr("$source/$entry", "$dest/$entry");
-            }
-        }
-        // Clean up
-        $dir->close();
-        return true;
+    private function debug($message){
+    	if($this->options->getVerbose){
+    		print($message);	
+    	}
     }
 }
 ?>

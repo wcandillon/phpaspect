@@ -31,7 +31,7 @@ class PHP_Highlight
      * @var         string
      * @access      private
      */
-    var $_source = false;
+    public $_source = false;
 
     /**
      * Hold highlight colors
@@ -45,7 +45,7 @@ class PHP_Highlight
      * @var         array
      * @access      public
      */
-    var $highlight;
+    public $highlight;
 
     /**
      * Things to be replaced for formatting or otherwise reasons
@@ -56,7 +56,7 @@ class PHP_Highlight
      * @var         array
      * @access      public
      */
-    var $replace = array(
+    public $replace = array(
         0 => array("\t", ' '),
         1 => array('&nbsp;&nbsp;&nbsp;&nbsp;', '&nbsp;'));
 
@@ -66,7 +66,7 @@ class PHP_Highlight
      * @var         string
      * @access      public
      */
-    var $manual = '<a href="http://www.php.net/function.%s">%s</a>';
+    public $manual = '<a href="http://www.php.net/function.%s">%s</a>';
 
     /**
      * Format of the span tag to be wrapped around each token
@@ -74,7 +74,7 @@ class PHP_Highlight
      * @var         string
      * @access      public
      */
-    var $span;
+    public $span;
 
     /**
      * Constructor

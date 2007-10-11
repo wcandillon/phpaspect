@@ -27,7 +27,7 @@ interface Weaver{
     
     public function removePHPFileUrl($fileName);
     
-    public function getWeavingOptions();
+    public function getWeavingPreferences();
     
     public function setWeavingPreferences(WeavingPreferences $options);
     
@@ -36,8 +36,6 @@ interface Weaver{
     public function reset();
     
     public function weave();
-    
-    public function weaveIn($destinationURL);
     
     public function weaveFile($fileURL);
     
