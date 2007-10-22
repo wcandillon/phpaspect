@@ -1,9 +1,10 @@
 <?php
+set_include_path(get_include_path().PATH_SEPARATOR.'/home/wcandillon/Zend/workspaces/DefaultWorkspace/');
 
 require_once 'PHPAspect/Frontends/Cli/Console.php';
 require_once 'PHPAspect/Weaver/PHPAspectWeaver.php';
 require_once 'PHPAspect/Utils/FileSystem.php';
-      
+
 try{
 	//Change to the cli current directory
 	chdir($_ENV['PWD']);

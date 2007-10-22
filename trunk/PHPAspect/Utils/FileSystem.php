@@ -74,6 +74,17 @@ class FileSystem {
         }
         return true;
     }
+    
+    public static function mapPath($path){
+    	$includePath = explode(PATH_SEPARATOR, get_include_path());
+  		foreach($includePath as $prefix){
+		    $potentialPath = $prefix.DIRECTORY_SEPARATOR.$path;
+		    if(file_exists($potentialPath)){
+		    	return($potentialPath);
+		    }
+		}
+    	return false;
+    }
 }
 
 ?>

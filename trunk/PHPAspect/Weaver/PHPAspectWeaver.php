@@ -19,9 +19,14 @@
 //namespace PHPAspect::Weaver;
 
 require_once 'PHPAspect/Weaver/Weaver.php';
-require_once 'PHPAspect/Weaver/WeavingPreferences.php';
+require_once 'PHPAspect/Weaver/PHPAspectWeavingPreferences.php';
 require_once 'PHPAspect/Weaver/XSLTWeaver.php';
 require_once 'PHPAspect/Weaver/MalformedURLException.php';
+
+$prefix = (PHP_SHLIB_SUFFIX === 'dll') ? 'php_' : '';
+if(!extension_loaded('parse_tree') && !dl($prefix . 'parse_tree.' . PHP_SHLIB_SUFFIX)){
+	throw new Exception("phpAspect has dependency with the Parse_Tree Pecl extension\npecl install -f Parse_Tree");
+}
 
 class PHPAspectWeaver extends XSLTWeaver implements Weaver{
     
@@ -35,6 +40,8 @@ class PHPAspectWeaver extends XSLTWeaver implements Weaver{
     public function __construct(WeavingPreferences $options=null, $aspectURLs=null, $phpFileURLs=null){
         if($options){
             $this->weavingPreferences = $options;    
+        }else{
+        	$this->weavingPreferences = new WeavingPreferences();
         }
         
         if(is_dir($aspectURLs)){
@@ -221,12 +228,10 @@ class PHPAspectWeaver extends XSLTWeaver implements Weaver{
     
     private function generateAspectRuntimeEntities($destination){
     	foreach ($this->aspectURLs as $aspectURL){
+	        $target    = $destination.DIRECTORY_SEPARATOR.$this->getFileName($aspectURL).'.php';
 	        $aspectXML = parse_tree_from_file($aspectURL);
-	        var_dump($aspectXML);
-	        $classXML  = self::process($aspectXML, self::XSLT_TOCLASS);
-	        $target    = $destination.$this->getFileName($aspectURL);
-	        self::processFileIn($classXML, self::XSLT_TOWRITE, $target);
-    	} 
+	        self::processFileIn($aspectXML, self::XSLT_TOCLASS, $target);
+    	}
     }
     
     private function getFileName($url){
@@ -237,6 +242,22 @@ class PHPAspectWeaver extends XSLTWeaver implements Weaver{
     	if($this->options->getVerbose){
     		print($message);	
     	}
+    }
+    
+    private function processFileIn($file, $xsl, $target){
+    	$beautifier = $this->weavingPreferences->getBeautifier();
+    	$input = parent::process($file, $xsl);
+    	$beautifier->setInputString($input->saveXML());
+    	$beautifier->setOutputFile($target);
+    	$beautifier->process();
+    }
+    
+    private function processFile($file, $xsl){
+        $beautifier = $this->weavingPreferences->getBeautifier();
+        $input = parent::process($file, $xsl);
+    	$beautifier->setInputString($input->saveXML());
+    	$beautifier->setOutputFile($file);
+    	$beautifier->process();
     }
 }
 ?>
