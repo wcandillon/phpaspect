@@ -14,9 +14,25 @@
 
 -->
 <xsl:stylesheet version="1.0" xmlns="&xsl;" xmlns:xsl="&xsl;" xmlns:php="&php;">
-    <xsl:output method="text" indent="no"/>
-	<xsl:template match="php:aspect_declaration_statement">
-		<xsl:text>class</xsl:text>
+    <xsl:output method="text" />
+	<xsl:template match="php:unticked_aspect_declaration_statement">
+		<xsl:text>&lt;?php class </xsl:text>
+		<xsl:value-of select="php:T_STRING" />
+		<xsl:value-of select="php:T_EXTENDS" />
+		<xsl:value-of select="php:extends_from" />
+		<xsl:value-of select="php:implements_list" />
+		<xsl:choose>
+			<xsl:when test="php:implents_list/php:T_IMPLEMENTS">
+				<xsl:text>, Aspect</xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>implements Aspect</xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:text>{</xsl:text>
+		<xsl:value-of select="//php:class_statement" />
+		<xsl:text>} ?&gt;</xsl:text>
+<php:implements_list>
+</php:implements_list>
 	</xsl:template>
 </xsl:stylesheet>
-

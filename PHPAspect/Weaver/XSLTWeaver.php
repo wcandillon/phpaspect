@@ -1,42 +1,45 @@
 <?php
 
+require_once 'PHPAspect/Utils/FileSystem.php';
+
 define('LIBXML_OPTIONS', LIBXML_DTDLOAD | LIBXML_NOENT | LIBXML_DTDATTR | LIBXML_NOCDATA);
 
-abstract class XSLTWeaver{
+class XSLTWeaver{
 
-    const XSLT_TOWRITE = 'XSLT/toWrite.xsl';
-    const XSLT_TOCLASS = 'XSLT/toClass.xsl';
-    const XSLT_TOXSLT  = 'XSLT/toXSLT.xsl';
+	const XSLT_TOWRITE = 'PHPAspect/Weaver/XSLT/toWrite.xsl';
+    const XSLT_TOCLASS = 'PHPAspect/Weaver/XSLT/toClass.xsl';
+    const XSLT_TOXSLT  = 'PHPAspect/Weaver/XSLT/toXSLT.xsl';
     
-    private static function processFileIn($file, $xsl, $destination){
-        file_put_contents($destination, $this->process($file, $xsl));
-    }
-    
-    private static function processFile($file, $xsl){
-        file_put_contents($file, $this->process($file, $xsl));
-    }
+//    protected static function processFileIn($file, $xsl, $destination){
+//        file_put_contents($destination, self::process($file, $xsl));
+//    }
+//    
+//    protected static function processFile($file, $xsl){
+//        file_put_contents($file, self::process($file, $xsl));
+//    }
     
     /*
      * @TODO: test the reference counting with get memory usage
+     * @return DOMDocument
      */
-    private static function process($xml, $xsl){
+    protected static function process($xml, $xsl){
         
         if($xml instanceof DOMDocument){
             //Do nothing
         }elseif(realpath($xml)){
-            $xml = DOMDocument::load($xml);
+            $xml = DOMDocument::load($xml, LIBXML_OPTIONS);
         }elseif(is_string($xml)){
-            $xml = DOMDOcument::loadXML($xml);
+            $xml = DOMDOcument::loadXML($xml, LIBXML_OPTIONS);
         }else{
             throw new InvalidParameterException($xml);
         }
 
         if($xsl instanceof DOMDocument){
             //Do nothing
-        }elseif(realpath($xsl)){
-            $xsl = DOMDocument::load($xsl);
+        }elseif($path = FileSystem::mapPath($xsl)){
+            $xsl = DOMDocument::load($path, LIBXML_OPTIONS);
         }elseif(is_string($xsl)){
-            $xsl = DOMDocument::loadXML($xsl);
+            $xsl = DOMDocument::loadXML($xsl, LIBXML_OPTIONS);
         }else{
             throw new InvalidParameterException($xsl);
         }

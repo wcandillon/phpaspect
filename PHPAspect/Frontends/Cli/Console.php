@@ -1,7 +1,8 @@
 <?php
 
 require_once 'Console/Getopt.php';
-require_once 'PHPAspect/Weaver/WeavingPreferences.php';
+require_once 'PHP/Beautifier.php';
+require_once 'PHPAspect/Weaver/PHPAspectWeavingPreferences.php';
 require_once 'PHPAspect/Utils/FileSystem.php';
 
 class Console extends Console_Getopt{
@@ -106,8 +107,9 @@ class Console extends Console_Getopt{
         if(!isset($_SERVER['argc']) || !$_SERVER['argc']){
             throw new Exception("Could not read cmd args (register_argc_argv=Off?)\nphpAspect can only run in cli mode");
         }
-
-        $this->weavingPreferences = new WeavingPreferences();
+		$beautifier = new PHP_Beautifier();
+		$beautifier->addFilter('Pear');
+        $this->weavingPreferences = new PHPAspectWeavingPreferences($beautifier);
     }
 
     /**
