@@ -18,9 +18,9 @@
 
 //namespace PHPAspect::Weaver;
 
+require_once 'PHPAspect/Utils/XSLTProc.php';
 require_once 'PHPAspect/Weaver/Weaver.php';
 require_once 'PHPAspect/Weaver/PHPAspectWeavingPreferences.php';
-require_once 'PHPAspect/Weaver/XSLTWeaver.php';
 require_once 'PHPAspect/Weaver/MalformedURLException.php';
 
 $prefix = (PHP_SHLIB_SUFFIX === 'dll') ? 'php_' : '';
@@ -28,7 +28,7 @@ if(!extension_loaded('parse_tree') && !dl($prefix . 'parse_tree.' . PHP_SHLIB_SU
 	throw new Exception("phpAspect has dependency with the Parse_Tree Pecl extension\npecl install -f Parse_Tree");
 }
 
-class PHPAspectWeaver extends XSLTWeaver implements Weaver{
+class PHPAspectWeaver implements Weaver{
     
     private $aspectURLs  = array();
     private $phpFileURLs = array();
@@ -37,6 +37,10 @@ class PHPAspectWeaver extends XSLTWeaver implements Weaver{
     const PHPASPECT_CONTENTTYPE = 'ap';
     const PHP_CONTENTTYPE       = 'php, php3, php4, php5, phtml, inc';
 
+    const XSLT_TOWRITE = 'PHPAspect/Weaver/XSLT/toWrite.xsl';
+    const XSLT_TOCLASS = 'PHPAspect/Weaver/XSLT/toClass.xsl';
+    const XSLT_TOXSLT  = 'PHPAspect/Weaver/XSLT/toXSLT.xsl';
+    
     public function __construct(WeavingPreferences $options=null, $aspectURLs=null, $phpFileURLs=null){
         if($options){
             $this->weavingPreferences = $options;    
@@ -230,6 +234,7 @@ class PHPAspectWeaver extends XSLTWeaver implements Weaver{
     	foreach ($this->aspectURLs as $aspectURL){
 	        $target    = $destination.DIRECTORY_SEPARATOR.$this->getFileName($aspectURL).'.php';
 	        $aspectXML = parse_tree_from_file($aspectURL);
+
 	        self::processFileIn($aspectXML, self::XSLT_TOCLASS, $target);
     	}
     }
@@ -238,7 +243,7 @@ class PHPAspectWeaver extends XSLTWeaver implements Weaver{
         return pathinfo($url, PATHINFO_FILENAME);
     }
     
-    private function debug($message){
+    private function message($message){
     	if($this->options->getVerbose){
     		print($message);	
     	}
@@ -246,18 +251,20 @@ class PHPAspectWeaver extends XSLTWeaver implements Weaver{
     
     private function processFileIn($file, $xsl, $target){
     	$beautifier = $this->weavingPreferences->getBeautifier();
-    	$input = parent::process($file, $xsl);
-    	$beautifier->setInputString($input->saveXML());
+    	$input = XSLTProc::transformToXML($file, $xsl);
+    	$beautifier->setInputString(trim($input));
     	$beautifier->setOutputFile($target);
     	$beautifier->process();
+    	$beautifier->save();
     }
     
     private function processFile($file, $xsl){
         $beautifier = $this->weavingPreferences->getBeautifier();
-        $input = parent::process($file, $xsl);
-    	$beautifier->setInputString($input->saveXML());
+        $input = XSLTProc::transformToXML($file, $xsl);
+    	$beautifier->setInputString(trim($input));
     	$beautifier->setOutputFile($file);
     	$beautifier->process();
+    	$beautifier->save();
     }
 }
 ?>
