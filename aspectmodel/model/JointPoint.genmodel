@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/aspectmodel/src"
+    modelPluginID="aspectmodel" modelName="JointPoint" importerID="org.eclipse.emf.importer.java"
+    complianceLevel="5.0" copyrightFields="false">
+  <foreignModel>@model</foreignModel>
+  <genPackages prefix="Lang" basePackage="org.aspectj" disposableProviderFactory="true"
+      ecorePackage="lang.ecore#/">
+    <genDataTypes ecoreDataType="lang.ecore#//Signature"/>
+    <genDataTypes ecoreDataType="lang.ecore#//SourceLocation"/>
+    <genClasses ecoreClass="lang.ecore#//JoinPoint">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute lang.ecore#//JoinPoint/this"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute lang.ecore#//JoinPoint/target"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute lang.ecore#//JoinPoint/signature"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute lang.ecore#//JoinPoint/sourceLocation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute lang.ecore#//JoinPoint/kind"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>
