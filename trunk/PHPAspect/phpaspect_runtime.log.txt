@@ -1,0 +1,15 @@
+
+Compilation error in the file : /home/wcandillon/model/PHPAspect/Model/php5_type.mt
+Sequence not valid
+
+Compilation error in the file : /home/wcandillon/model/PHPAspect/Model/php5_type.mt
+Sequence not valid
+
+Compilation error in the file : /home/wcandillon/model/PHPAspect/Model/php5_type.mt
+Sequence not valid
+
+Compilation error in the file : /home/wcandillon/model/PHPAspect/Model/php5_type.mt
+Sequence not valid
+
+Compilation error in the file : /home/wcandillon/model/PHPAspect/Model/php5_type.mt
+Sequence not valid
